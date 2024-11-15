@@ -329,6 +329,107 @@
         footer a:hover {
             color: black;
         }
+        /* Chatbox styles */
+        .chatbox {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex; /* Always visible initially */
+            flex-direction: column;
+        }
+
+        .chatbox-header {
+            background-color: #006699;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .chatbox-body {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .chatbox-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chatbox-footer input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chatbox-footer button {
+            background-color: #006699;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .chatbox-footer button:hover {
+            background-color: #005577;
+        }
+
+        /* Chatbox minimize button */
+        .chatbox-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #006699;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chatbox-toggle:hover {
+            background-color: #005577;
+        }
+
+        /* When chatbox is minimized */
+        .chatbox.minimized .chatbox-body,
+        .chatbox.minimized .chatbox-footer {
+            display: none;
+        }
+
+        /* Minimized chatbox state */
+        .chatbox.minimized .chatbox-header {
+            justify-content: center;
+        }
+
+        /* Show chatbox content only when expanded */
+        .chatbox.minimized .chatbox-toggle {
+            display: block;
+        }
+
+        .chatbox.minimized {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            bottom: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -500,6 +601,54 @@
             <a href="https://maps.app.goo.gl/D7Uf82NLVP6M2bHZ9">Locate Us</a>
         </div>
     </div>
+
+ <!-- Chatbox JavaScript -->
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">
+            <span>Chat with us</span>
+            <button onclick="toggleChatbox()">X</button>
+        </div>
+        <div class="chatbox-body">
+            <!-- Chat messages will go here -->
+        </div>
+        <div class="chatbox-footer">
+            <input type="text" placeholder="Type a message..." id="chatInput">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Chatbox toggle button -->
+    <button class="chatbox-toggle" onclick="toggleChatbox()">&#x2709;</button>
+
+    <script>
+        // Function to send a message (currently just logs to the console)
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput.value.trim()) {
+                const chatBoxBody = document.querySelector('.chatbox-body');
+                const message = document.createElement('div');
+                message.textContent = chatInput.value;
+                chatBoxBody.appendChild(message);
+                chatInput.value = '';
+                chatBoxBody.scrollTop = chatBoxBody.scrollHeight; // Scroll to bottom
+            }
+        }
+
+        // Function to toggle chatbox state (minimized or maximized)
+        function toggleChatbox() {
+            const chatbox = document.getElementById('chatbox');
+            const chatboxToggle = document.querySelector('.chatbox-toggle');
+
+            chatbox.classList.toggle('minimized'); // Toggle the minimized class
+
+            // Toggle the icon on the toggle button
+            if (chatbox.classList.contains('minimized')) {
+                chatboxToggle.innerHTML = '&#x1F4AC;'; // Chat bubble icon for open state
+            } else {
+                chatboxToggle.innerHTML = '&#x2709;'; // Envelope icon for minimized state
+            }
+        }
+    </script>
 
     <!-- Footer -->
     <footer>
