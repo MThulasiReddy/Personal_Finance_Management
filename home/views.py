@@ -14,7 +14,7 @@ from django.utils import timezone
 def home(request):
     if request.session.has_key('is_logged'):
         return redirect('/finance_management')
-    return render(request,'home/login.html')
+    return render(request,'home/finance_management.html')
    # return HttpResponse('This is home')
 def index(request):
     if request.session.has_key('is_logged'):
